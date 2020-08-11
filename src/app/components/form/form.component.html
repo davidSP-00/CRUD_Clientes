@@ -1,0 +1,102 @@
+<ul class="alert alert-danger" *ngIf="errores?.length > 0">
+    <li *ngFor="let err of errores">
+        {{err}}
+    </li>
+</ul>
+
+
+<div class="card bg-dark text-white">
+
+
+    <div class="card-header" *ngIf="!cliente.id">Crear Cliente</div>
+    <div class="card-header" *ngIf="cliente.id">Editar Cliente</div>
+    <div class="card-body">
+        <form #clienteForm="ngForm">
+            <div class="form-group row">
+                <label for="" class="col-form-label col-sm-2">Nombre</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre"
+                        #nombre="ngModel"><!-- required minlength="4" -->
+                    <div class="alert alert-danger"
+                        *ngIf="nombre.invalid && (nombre.dirty || nombre.touched || clienteForm.submitted)">
+                        <div *ngIf="nombre.errors.required">
+                            Nombre es requerido
+
+                        </div>
+                        <div *ngIf="nombre.errors.minlength">
+                            Nombre debe tener al menos 4 caracteres
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="" class="col-form-label col-sm-2"> Apellido</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" [(ngModel)]="cliente.apellido" name="apellido"
+                        #apellido="ngModel">
+                    <div class="alert alert-danger"
+                        *ngIf="apellido.invalid && (apellido.dirty || apellido.touched || clienteForm.submitted)">
+                        <div *ngIf="apellido.errors.required">
+                            Apellido es requerido
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="" class="col-form-label col-sm-2">Email</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" [(ngModel)]="cliente.email" name="email" #email="ngModel">
+                    <div class="alert alert-danger"
+                        *ngIf="email.invalid && (email.dirty || email.touched || clienteForm.submitted)">
+                        <div *ngIf="email.errors.required">
+                            Email es requerido
+
+                        </div>
+                        <div *ngIf="email.errors.email">
+                            Email debe tener un formato valido
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="" class="col-form-label col-sm-2"> Fecha</label>
+                <div class="col-sm-6">
+
+
+                    <input onkeydown="return false" [matDatepicker]="miDatepicker" class="form-control" [(ngModel)]="cliente.createAt"
+                        name="createAt" style="display:inline; width:300px">
+                    <mat-datepicker-toggle [for]="miDatepicker"></mat-datepicker-toggle>
+                    <mat-datepicker #miDatepicker></mat-datepicker>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="" class="col-form-label col-sm-2"> Region</label>
+                <div class="col-sm-6">
+
+
+                    <select  [compareWith]="compararRegion" class="form-control" [(ngModel)]="cliente.region"
+                        name="region" >
+                        <option [ngValue]="undefined">seleccionar una region</option>
+                        <option *ngFor="let region of regiones" [ngValue]="region">{{region.nombre}}</option>
+                    </select>
+                   
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6" *ngIf="!cliente.id">
+                    <button class="btn btn-primary" type="submit" (click)="create(clienteForm)">Crear</button>
+
+                </div>
+                <div class="col-sm-6" *ngIf="cliente.id">
+                    <button class="btn btn-primary" type="submit" (click)="update(clienteForm)">Actualizar</button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
